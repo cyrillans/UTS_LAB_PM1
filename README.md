@@ -140,10 +140,6 @@ Halaman (Screenshot)
 - **Ikon:** ikon antarmuka menggunakan ikon Material dari Flutter.
 - **Gambar soal dari jaringan:** beberapa ilustrasi soal menggunakan URL Unsplash yang didefinisikan pada `lib/data/quiz_data.dart`. 
 
-## GitHub
-
-- **Repository:** [Masukkan URL repository GitHub]
-
 ## Catatan
 
 - Soal kuis disimpan secara lokal di `lib/data/quiz_data.dart` dan dapat diubah sesuai kebutuhan.
