@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../routes/routes_app.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -35,19 +36,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           content: Text('Please fill in all fields.'),
         ),
       );
-
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Account created for $name!',
-        ),
-      ),
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.login,
     );
-
-    // Nanti diarahkan ke LoginScreen.
   }
 
   @override
@@ -67,7 +62,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               vertical: size.height * 0.02,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: size.height * 0.02,
@@ -86,8 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
 
                 Text(
-                  'Create your account and start '
-                  'your quiz journey.',
+                  'Create your account and start your quiz journey.',
                   style: TextStyle(
                     fontSize: size.width * 0.038,
                     color: Colors.grey.shade600,
@@ -98,7 +93,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: size.height * 0.035,
                 ),
 
-                // NAME
                 Text(
                   'Name',
                   style: TextStyle(
@@ -145,7 +139,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: size.height * 0.02,
                 ),
 
-                // EMAIL
                 Text(
                   'Email',
                   style: TextStyle(
@@ -194,7 +187,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: size.height * 0.02,
                 ),
 
-                // PASSWORD
                 Text(
                   'Password',
                   style: TextStyle(
@@ -255,7 +247,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: size.height * 0.035,
                 ),
 
-                // SIGN UP BUTTON
                 SizedBox(
                   width: double.infinity,
                   height: size.height * 0.065,
@@ -287,8 +278,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 Center(
                   child: Text(
-                    'By creating an account, you agree '
-                    'to our terms.',
+                    'By creating an account, you agree to our terms.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: size.width * 0.03,

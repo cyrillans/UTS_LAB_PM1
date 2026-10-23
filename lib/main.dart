@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'screens/splash_screen.dart';
+import 'routes/routes_app.dart';
 
 void main() {
   runApp(const QuizzyApp());
@@ -17,18 +16,15 @@ class QuizzyApp extends StatelessWidget {
 
       theme: ThemeData(
         useMaterial3: true,
-
         fontFamily: 'DejaVuSans',
-
-        scaffoldBackgroundColor:
-            const Color(0xFFF8F7FF),
-
+        scaffoldBackgroundColor: const Color(0xFFF8F7FF),
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF6C63FF),
         ),
       ),
 
-      home: const SplashScreen(),
+      initialRoute: AppRoutes.splash,
+      routes: AppRoutes.routes,
     );
   }
 }

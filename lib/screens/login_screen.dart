@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'signup_screen.dart';
+import '../routes/routes_app.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,21 +34,16 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Login berhasil!'),
-      ),
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.home,
     );
-
-    // Nanti diarahkan ke HomeScreen.
   }
 
   void goToSignUp() {
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => const SignUpScreen(),
-      ),
+      AppRoutes.signup,
     );
   }
 
@@ -72,7 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: size.height * 0.04,
                 ),
 
-                // LOGO
                 Center(
                   child: Image.asset(
                     'assets/images/logo_quizzy.png',
@@ -109,7 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: size.height * 0.04,
                 ),
 
-                // EMAIL
                 Text(
                   'Email',
                   style: TextStyle(
@@ -154,7 +146,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: size.height * 0.025,
                 ),
 
-                // PASSWORD
                 Text(
                   'Password',
                   style: TextStyle(
@@ -212,7 +203,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: size.height * 0.04,
                 ),
 
-                // LOGIN BUTTON
                 SizedBox(
                   width: double.infinity,
                   height: size.height * 0.065,
@@ -242,10 +232,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: size.height * 0.025,
                 ),
 
-                // SIGN UP
                 Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment:
+                        MainAxisAlignment.center,
                     children: [
                       Text(
                         "Don't have an account? ",
@@ -261,7 +251,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                             fontSize: size.width * 0.035,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF6C63FF),
+                            color:
+                                const Color(0xFF6C63FF),
                           ),
                         ),
                       ),

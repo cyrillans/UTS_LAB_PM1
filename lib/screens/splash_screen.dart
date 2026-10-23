@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'login_screen.dart';
+import '../routes/routes_app.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,11 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         if (!mounted) return;
 
-        Navigator.pushReplacement(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
+          AppRoutes.login,
         );
       },
     );
@@ -56,9 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(
-                          alpha: 0.08,
-                        ),
+                        color: Colors.black.withValues(alpha: 0.08),
                         blurRadius: 25,
                         offset: const Offset(0, 10),
                       ),
