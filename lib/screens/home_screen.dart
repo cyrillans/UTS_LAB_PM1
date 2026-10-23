@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../routes/routes_app.dart';
 import '../widgets/bottom_nav.dart';
 import '../widgets/primary_button.dart';
+import '../providers/quiz_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,15 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void startQuiz() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Quiz screen akan dibuat selanjutnya 🚀',
-        ),
-      ),
-    );
-  }
+ void startQuiz() {
+  context.read<QuizProvider>().resetQuiz();
+
+  Navigator.pushNamed(
+    context,
+    AppRoutes.quiz,
+  );
+}
 
   @override
   Widget build(BuildContext context) {

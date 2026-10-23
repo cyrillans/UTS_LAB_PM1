@@ -1,10 +1,11 @@
+
 name: quiz_app
 description: Aplikasi kuis pilihan ganda untuk UTS Pemrograman Mobile.
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
+  sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -18,11 +19,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
   assets:
-    - assets/images/
+    - assets/images/logo_quizzy.png
+    - assets/images/react_benar.png
+    - assets/images/react_salah.png
+
   fonts:
     - family: QuizSans
       fonts:
         - asset: assets/fonts/DejaVuSans.ttf
+          weight: 400
         - asset: assets/fonts/DejaVuSans-Bold.ttf
           weight: 700

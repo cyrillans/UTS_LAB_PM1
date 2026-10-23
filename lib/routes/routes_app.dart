@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../screens/splash_screen.dart';
@@ -6,6 +7,8 @@ import '../screens/signup_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/leaderboard_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/quiz_screen.dart';
+import '../screens/result_screen.dart';
 
 class AppRoutes {
   static const String splash = '/splash';
@@ -14,13 +17,17 @@ class AppRoutes {
   static const String home = '/home';
   static const String leaderboard = '/leaderboard';
   static const String profile = '/profile';
+  static const String quiz = '/quiz';
+  static const String result = '/result';
 
-  static Map<String, WidgetBuilder> routes = {
+  static final Map<String, WidgetBuilder> routes = {
     splash: (context) => const SplashScreen(),
     login: (context) => const LoginScreen(),
     signup: (context) => const SignUpScreen(),
     home: (context) => const HomeScreen(),
     leaderboard: (context) => const LeaderboardScreen(),
     profile: (context) => const ProfileScreen(),
+    quiz: (context) => const QuizScreen(),
+    result: (context) => const ResultScreen(),
   };
 }
