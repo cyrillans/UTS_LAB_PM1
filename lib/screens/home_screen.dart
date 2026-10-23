@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,11 +20,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mengambil nama terbaru dari UserSession.
     final userName = context.watch<UserSession>().userName;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final pageBackground = theme.scaffoldBackgroundColor;
+    final cardBackground = theme.colorScheme.surface;
+    final primaryText = theme.colorScheme.onSurface;
+    final secondaryText = isDark
+        ? Colors.grey.shade400
+        : Colors.grey.shade600;
+    final borderColor = theme.dividerColor.withOpacity(0.2);
 
     return Scaffold(
-      backgroundColor: background,
+      backgroundColor: pageBackground,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
@@ -40,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                     height: 48,
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: cardBackground,
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
@@ -60,19 +68,19 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Selamat datang 👋',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: secondaryText,
                           ),
                         ),
                         const SizedBox(height: 3),
                         Text(
                           '$userName!',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 21,
-                            color: darkPurple,
+                            color: primaryText,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
@@ -81,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: cardBackground,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: IconButton(
@@ -92,9 +100,9 @@ class HomeScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.notifications_none_rounded,
-                        color: darkPurple,
+                        color: primaryText,
                       ),
                     ),
                   ),
@@ -231,7 +239,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 28),
 
               // STATISTIK
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -239,10 +247,10 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.w900,
-                      color: darkPurple,
+                      color: primaryText,
                     ),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.insights_rounded,
                     color: purple,
                     size: 23,
@@ -286,12 +294,12 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 29),
 
               // AKTIVITAS
-              const Text(
+              Text(
                 'Pilih Aktivitas',
                 style: TextStyle(
                   fontSize: 19,
                   fontWeight: FontWeight.w900,
-                  color: darkPurple,
+                  color: primaryText,
                 ),
               ),
 
@@ -300,7 +308,7 @@ class HomeScreen extends StatelessWidget {
               Text(
                 'Mulai tantanganmu hari ini',
                 style: TextStyle(
-                  color: Colors.grey.shade600,
+                  color: secondaryText,
                   fontSize: 12,
                 ),
               ),
@@ -338,17 +346,19 @@ class HomeScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(17),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEDEBFF),
+                  color: isDark
+                      ? const Color(0xFF29263F)
+                      : const Color(0xFFEDEBFF),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.lightbulb_rounded,
                       color: purple,
                       size: 29,
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,16 +368,18 @@ class HomeScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w900,
-                              color: darkPurple,
+                              color: primaryText,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             'Konsistensi berlatih adalah kunci untuk mendapatkan hasil yang lebih baik.',
                             style: TextStyle(
                               fontSize: 11,
                               height: 1.5,
-                              color: Color(0xFF625B86),
+                              color: isDark
+                                  ? const Color(0xFFD0CAFF)
+                                  : const Color(0xFF625B86),
                             ),
                           ),
                         ],
@@ -403,16 +415,19 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 5,
         vertical: 15,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(19),
         border: Border.all(
-          color: Colors.grey.shade100,
+          color: theme.dividerColor.withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -433,10 +448,10 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 19,
               fontWeight: FontWeight.w900,
-              color: HomeScreen.darkPurple,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 5),
@@ -445,7 +460,9 @@ class _StatCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 10,
-              color: Colors.grey.shade600,
+              color: isDark
+                  ? Colors.grey.shade400
+                  : Colors.grey.shade600,
             ),
           ),
         ],
@@ -472,8 +489,11 @@ class _ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Material(
-      color: Colors.white,
+      color: theme.colorScheme.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -483,7 +503,7 @@ class _ActivityCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Colors.grey.shade100,
+              color: theme.dividerColor.withOpacity(0.2),
             ),
           ),
           child: Row(
@@ -508,10 +528,10 @@ class _ActivityCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w800,
-                        color: HomeScreen.darkPurple,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 5),
@@ -520,7 +540,9 @@ class _ActivityCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11,
                         height: 1.4,
-                        color: Colors.grey.shade600,
+                        color: isDark
+                            ? Colors.grey.shade400
+                            : Colors.grey.shade600,
                       ),
                     ),
                   ],
@@ -530,7 +552,9 @@ class _ActivityCard extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 16,
-                color: Colors.grey.shade400,
+                color: isDark
+                    ? Colors.grey.shade500
+                    : Colors.grey.shade400,
               ),
             ],
           ),

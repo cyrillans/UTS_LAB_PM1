@@ -1,7 +1,10 @@
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_session.dart';
 import '../routes/routes_app.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,12 +21,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(
       const Duration(seconds: 3),
-      () {
+      () async {
+        if (!mounted) return;
+
+        final hasSession =
+            await context.read<UserSession>().restoreSession();
+
         if (!mounted) return;
 
         Navigator.pushReplacementNamed(
           context,
-          AppRoutes.login,
+          hasSession ? AppRoutes.home : AppRoutes.login,
         );
       },
     );

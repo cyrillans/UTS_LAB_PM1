@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import '../routes/routes_app.dart';
 
@@ -30,6 +31,14 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final backgroundColor = theme.colorScheme.surface;
+    final inactiveColor = isDark
+        ? Colors.grey.shade400
+        : Colors.grey.shade600;
+
     const items = [
       (icon: Icons.home_rounded, label: 'Home'),
       (icon: Icons.quiz_rounded, label: 'Quiz'),
@@ -39,10 +48,15 @@ class BottomNav extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
+        border: Border(
+          top: BorderSide(
+            color: theme.dividerColor.withOpacity(0.2),
+          ),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withOpacity(isDark ? 0.15 : 0.06),
             blurRadius: 15,
             offset: const Offset(0, -3),
           ),
@@ -72,7 +86,7 @@ class BottomNav extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: selected
-                          ? purple.withOpacity(0.10)
+                          ? purple.withOpacity(isDark ? 0.20 : 0.10)
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -82,9 +96,7 @@ class BottomNav extends StatelessWidget {
                         Icon(
                           item.icon,
                           size: 24,
-                          color: selected
-                              ? purple
-                              : Colors.grey.shade500,
+                          color: selected ? purple : inactiveColor,
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -96,9 +108,7 @@ class BottomNav extends StatelessWidget {
                             fontWeight: selected
                                 ? FontWeight.w800
                                 : FontWeight.w500,
-                            color: selected
-                                ? purple
-                                : Colors.grey.shade600,
+                            color: selected ? purple : inactiveColor,
                           ),
                         ),
                       ],

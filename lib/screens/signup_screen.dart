@@ -27,7 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void signUp() {
+  Future<void> signUp() async {
     final name = nameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
@@ -59,11 +59,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    final registered = context.read<UserSession>().register(
+    final registered = await context.read<UserSession>().register(
       name: name,
       email: email,
       password: password,
     );
+
+    if (!mounted) return;
 
     if (!registered) {
       ScaffoldMessenger.of(context).showSnackBar(

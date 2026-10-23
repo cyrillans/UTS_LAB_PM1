@@ -36,45 +36,15 @@ class QuizzyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Quizzy',
       debugShowCheckedModeBanner: false,
+
+      // Navigasi aplikasi
       initialRoute: AppRoutes.splash,
       routes: AppRoutes.routes,
+
+      // Pengaturan tema global
       themeMode: themeProvider.themeMode,
-
-      // LIGHT MODE
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6C63FF),
-          brightness: Brightness.light,
-        ),
-        scaffoldBackgroundColor: const Color(0xFFF8F7FF),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF8F7FF),
-          foregroundColor: Color(0xFF25233A),
-          elevation: 0,
-          centerTitle: false,
-        ),
-        fontFamily: 'Poppins',
-      ),
-
-      // DARK MODE
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF8B83FF),
-          brightness: Brightness.dark,
-        ),
-        scaffoldBackgroundColor: const Color(0xFF121218),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF121218),
-          foregroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: false,
-        ),
-        fontFamily: 'Poppins',
-      ),
+      theme: themeProvider.lightTheme,
+      darkTheme: themeProvider.darkTheme,
     );
   }
 }

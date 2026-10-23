@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AnswerButton extends StatelessWidget {
@@ -21,8 +20,12 @@ class AnswerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color borderColor = Colors.grey.shade300;
-    Color backgroundColor = Colors.white;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    Color borderColor =
+        isDark ? const Color(0xFF484354) : Colors.grey.shade300;
+    Color backgroundColor =
+        isDark ? const Color(0xFF242130) : Colors.white;
     Color letterColor = const Color(0xFF6C63FF);
 
     if (hasAnswered && isCorrect) {
@@ -35,7 +38,9 @@ class AnswerButton extends StatelessWidget {
       letterColor = Colors.red;
     } else if (isSelected) {
       borderColor = const Color(0xFF6C63FF);
-      backgroundColor = const Color(0xFFE8E5FF);
+      backgroundColor = isDark
+          ? const Color(0xFF332D50)
+          : const Color(0xFFE8E5FF);
     }
 
     return InkWell(
@@ -74,8 +79,9 @@ class AnswerButton extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
               ),
             ),

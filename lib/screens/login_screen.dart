@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void login() {
+  Future<void> login() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
@@ -38,10 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final success = context.read<UserSession>().login(
+    final success = await context.read<UserSession>().login(
       email: email,
       password: password,
     );
+
+    if (!mounted) return;
 
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(

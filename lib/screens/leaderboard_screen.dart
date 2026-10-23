@@ -64,14 +64,19 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final isWide = size.width >= 600;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final pageBackground = isDark ? const Color(0xFF121212) : background;
+    final cardBackground = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final primaryText = isDark ? Colors.white : darkPurple;
+    final secondaryText = isDark ? Colors.white70 : Colors.grey;
 
     return Scaffold(
-      backgroundColor: background,
+      backgroundColor: pageBackground,
       appBar: AppBar(
-        backgroundColor: background,
+        backgroundColor: pageBackground,
         elevation: 0,
         centerTitle: false,
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -79,14 +84,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 23,
-                color: darkPurple,
+                color: primaryText,
               ),
             ),
             Text(
               'Buktikan kemampuan kuismu!',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: secondaryText,
               ),
             ),
           ],
@@ -98,19 +103,19 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           vertical: 12,
         ),
         children: [
-          _buildHeroCard(),
+          _buildHeroCard(context),
           const SizedBox(height: 22),
-          _buildStatistics(),
+          _buildStatistics(context),
           const SizedBox(height: 26),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Top Champions',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
-                  color: darkPurple,
+                  color: primaryText,
                 ),
               ),
               Container(
@@ -118,7 +123,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   horizontal: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: cardBackground,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: Colors.grey.shade200,
@@ -157,30 +162,30 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             ],
           ),
           const SizedBox(height: 18),
-          _buildPodium(),
+          _buildPodium(context),
           const SizedBox(height: 28),
-          const Text(
+          Text(
             'Semua Peringkat',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w800,
-              color: darkPurple,
+              color: primaryText,
             ),
           ),
           const SizedBox(height: 14),
           ...players.map(
-            (player) => _buildPlayerTile(player),
+            (player) => _buildPlayerTile(context, player),
           ),
           const SizedBox(height: 20),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFFECE9FF),
+              color: isDark ? const Color(0xFF302B4A) : const Color(0xFFECE9FF),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.lightbulb_rounded,
                   color: purple,
                   size: 30,
@@ -190,7 +195,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   child: Text(
                     'Terus latihan dan jawab kuis untuk meningkatkan skormu!',
                     style: TextStyle(
-                      color: darkPurple,
+                      color: primaryText,
                       fontWeight: FontWeight.w600,
                       height: 1.4,
                     ),
@@ -206,7 +211,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }
 
   // KARTU UTAMA
-  Widget _buildHeroCard() {
+  Widget _buildHeroCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
@@ -359,7 +364,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }
 
   // KARTU STATISTIK
-  Widget _buildStatistics() {
+  Widget _buildStatistics(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardBackground = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final primaryText = isDark ? Colors.white : darkPurple;
+    final secondaryText = isDark ? Colors.white70 : Colors.grey;
+    final borderColor = isDark ? Colors.white12 : Colors.grey.shade100;
+
     final averageScore =
         players.fold<int>(
           0,
@@ -424,10 +435,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         return Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: cardBackground,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Colors.grey.shade100,
+              color: borderColor,
             ),
             boxShadow: [
               BoxShadow(
@@ -448,16 +459,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               ),
               Text(
                 stat['value'] as String,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.w800,
-                  color: darkPurple,
+                  color: primaryText,
                 ),
               ),
               Text(
                 stat['title'] as String,
-                style: const TextStyle(
-                  color: Colors.grey,
+                style: TextStyle(
+                  color: secondaryText,
                   fontSize: 11,
                 ),
               ),
@@ -469,7 +480,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }
 
   // PODIUM JUARA - DIPERBAIKI AGAR TIDAK OVERFLOW
-  Widget _buildPodium() {
+  Widget _buildPodium(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primaryText = isDark ? Colors.white : darkPurple;
     final topThree = players.take(3).toList();
     final ordered = [
       topThree[1],
@@ -529,10 +542,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                         .map((part) => part[0])
                         .take(2)
                         .join(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
-                      color: darkPurple,
+                      color: primaryText,
                     ),
                   ),
                 ),
@@ -548,10 +561,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: darkPurple,
+                      color: primaryText,
                     ),
                   ),
                 ),
@@ -560,9 +573,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                 // Skor pemain
                 Text(
                   '${player['score']} poin',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: Colors.grey,
+                    color: isDark ? Colors.white70 : Colors.grey,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -592,10 +605,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(
                     '$rank',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w900,
-                      color: darkPurple,
+                      color: primaryText,
                     ),
                   ),
                 ),
@@ -609,8 +622,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   // KARTU PEMAIN DI DAFTAR PERINGKAT
   Widget _buildPlayerTile(
+    BuildContext context,
     Map<String, dynamic> player,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardBackground = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final primaryText = isDark ? Colors.white : darkPurple;
+    final secondaryText = isDark ? Colors.white70 : Colors.grey;
+    final borderColor = isDark ? Colors.white12 : Colors.grey.shade100;
     final rank = player['rank'] as int;
     final score = player['score'] as int;
     final isTopThree = rank <= 3;
@@ -619,12 +638,12 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardBackground,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isTopThree
               ? const Color(0xFFE5E0FF)
-              : Colors.grey.shade100,
+              : borderColor,
         ),
         boxShadow: [
           BoxShadow(
@@ -655,7 +674,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
-                color: rank <= 3 ? darkPurple : purple,
+                color: rank <= 3 ? primaryText : purple,
               ),
             ),
           ),
@@ -699,9 +718,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   player['name'] as String,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w800,
-                    color: darkPurple,
+                    color: primaryText,
                     fontSize: 13,
                   ),
                 ),
@@ -711,7 +730,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   child: LinearProgressIndicator(
                     value: (score / 100).clamp(0.0, 1.0),
                     minHeight: 6,
-                    backgroundColor: const Color(0xFFEDEBFA),
+                    backgroundColor: isDark ? const Color(0xFF39354A) : const Color(0xFFEDEBFA),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       rank == 1
                           ? const Color(0xFFFFBD4A)
@@ -722,8 +741,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                 const SizedBox(height: 4),
                 Text(
                   '${player['played']} kuis dimainkan',
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: secondaryText,
                     fontSize: 10,
                   ),
                 ),
@@ -747,20 +766,20 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   const SizedBox(width: 3),
                   Text(
                     '$score',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w900,
-                      color: darkPurple,
+                      color: primaryText,
                     ),
                   ),
                 ],
               ),
-              const Text(
+              Text(
                 'POIN',
                 style: TextStyle(
                   fontSize: 9,
                   letterSpacing: 1,
-                  color: Colors.grey,
+                  color: secondaryText,
                   fontWeight: FontWeight.bold,
                 ),
               ),

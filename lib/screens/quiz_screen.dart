@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +12,7 @@ class QuizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final quiz = context.watch<QuizProvider>();
     final size = MediaQuery.sizeOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final question = quiz.questions[quiz.currentQuestion];
 
@@ -74,7 +74,9 @@ class QuizScreen extends StatelessWidget {
                   value: (quiz.currentQuestion + 1) /
                       quiz.totalQuestions,
                   minHeight: 8,
-                  backgroundColor: const Color(0xFFE8E5FF),
+                  backgroundColor: isDark
+                      ? const Color(0xFF38334D)
+                      : const Color(0xFFE8E5FF),
                   color: const Color(0xFF6C63FF),
                 ),
               ),
@@ -98,10 +100,13 @@ class QuizScreen extends StatelessWidget {
                     return Container(
                       height: size.height * 0.23,
                       width: double.infinity,
-                      color: const Color(0xFFE8E5FF),
+                      color: isDark
+                          ? const Color(0xFF242130)
+                          : const Color(0xFFE8E5FF),
                       alignment: Alignment.center,
-                      child:
-                          const CircularProgressIndicator(),
+                      child: const CircularProgressIndicator(
+                        color: Color(0xFF6C63FF),
+                      ),
                     );
                   },
                   errorBuilder:
@@ -109,7 +114,9 @@ class QuizScreen extends StatelessWidget {
                     return Container(
                       height: size.height * 0.23,
                       width: double.infinity,
-                      color: const Color(0xFFE8E5FF),
+                      color: isDark
+                          ? const Color(0xFF242130)
+                          : const Color(0xFFE8E5FF),
                       alignment: Alignment.center,
                       child: const Icon(
                         Icons.image_not_supported_outlined,
@@ -234,8 +241,9 @@ class QuizScreen extends StatelessWidget {
                     backgroundColor:
                         const Color(0xFF6C63FF),
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        Colors.grey.shade300,
+                    disabledBackgroundColor: isDark
+                        ? const Color(0xFF393544)
+                        : Colors.grey.shade300,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius:
