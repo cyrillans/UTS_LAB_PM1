@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_session.dart';
 import '../routes/routes_app.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -28,9 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    if (name.isEmpty ||
-        email.isEmpty ||
-        password.isEmpty) {
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields.'),
@@ -38,6 +40,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       return;
     }
+
+    if (!email.contains('@') || !email.contains('.')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid email address.'),
+        ),
+      );
+      return;
+    }
+
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password must be at least 6 characters.'),
+        ),
+      );
+      return;
+    }
+
+    final registered = context.read<UserSession>().register(
+      name: name,
+      email: email,
+      password: password,
+    );
+
+    if (!registered) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email is already registered.'),
+        ),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Account created! Please login.'),
+      ),
+    );
 
     Navigator.pushReplacementNamed(
       context,
@@ -53,7 +94,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         title: const Text('Sign Up'),
       ),
-
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -62,12 +102,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               vertical: size.height * 0.02,
             ),
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
+                SizedBox(height: size.height * 0.02),
 
                 Text(
                   'Create Account ✨',
@@ -77,9 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
+                SizedBox(height: size.height * 0.01),
 
                 Text(
                   'Create your account and start your quiz journey.',
@@ -89,9 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.035,
-                ),
+                SizedBox(height: size.height * 0.035),
 
                 Text(
                   'Name',
@@ -105,28 +138,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 TextField(
                   controller: nameController,
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     hintText: 'Enter your name',
-                    prefixIcon: const Icon(
-                      Icons.person_outline,
-                    ),
+                    prefixIcon: const Icon(Icons.person_outline),
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(
                         color: Colors.grey.shade200,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: const BorderSide(
                         color: Color(0xFF6C63FF),
                         width: 2,
@@ -135,9 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
+                SizedBox(height: size.height * 0.02),
 
                 Text(
                   'Email',
@@ -151,30 +178,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 TextField(
                   controller: emailController,
-                  keyboardType:
-                      TextInputType.emailAddress,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Enter your email',
-                    prefixIcon: const Icon(
-                      Icons.email_outlined,
-                    ),
+                    prefixIcon: const Icon(Icons.email_outlined),
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(
                         color: Colors.grey.shade200,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: const BorderSide(
                         color: Color(0xFF6C63FF),
                         width: 2,
@@ -183,9 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
+                SizedBox(height: size.height * 0.02),
 
                 Text(
                   'Password',
@@ -202,14 +221,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: !isPasswordVisible,
                   decoration: InputDecoration(
                     hintText: 'Create a password',
-                    prefixIcon: const Icon(
-                      Icons.lock_outline,
-                    ),
+                    prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          isPasswordVisible =
-                              !isPasswordVisible;
+                          isPasswordVisible = !isPasswordVisible;
                         });
                       },
                       icon: Icon(
@@ -221,20 +237,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(
                         color: Colors.grey.shade200,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16),
                       borderSide: const BorderSide(
                         color: Color(0xFF6C63FF),
                         width: 2,
@@ -243,9 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.035,
-                ),
+                SizedBox(height: size.height * 0.035),
 
                 SizedBox(
                   width: double.infinity,
@@ -253,13 +264,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: ElevatedButton(
                     onPressed: signUp,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color(0xFF6C63FF),
+                      backgroundColor: const Color(0xFF6C63FF),
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     child: Text(
@@ -272,9 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.025,
-                ),
+                SizedBox(height: size.height * 0.025),
 
                 Center(
                   child: Text(

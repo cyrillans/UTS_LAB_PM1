@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_session.dart';
 import '../routes/routes_app.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,6 +38,22 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    final success = context.read<UserSession>().login(
+      email: email,
+      password: password,
+    );
+
+    if (!success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Invalid email or password. Please sign up first.',
+          ),
+        ),
+      );
+      return;
+    }
+
     Navigator.pushReplacementNamed(
       context,
       AppRoutes.home,
@@ -62,9 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: size.height * 0.04,
-                ),
+                SizedBox(height: size.height * 0.04),
 
                 Center(
                   child: Image.asset(
@@ -74,9 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.04,
-                ),
+                SizedBox(height: size.height * 0.04),
 
                 Text(
                   'Welcome Back! 👋',
@@ -86,9 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
+                SizedBox(height: size.height * 0.01),
 
                 Text(
                   'Login to continue your quiz journey.',
@@ -98,9 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.04,
-                ),
+                SizedBox(height: size.height * 0.04),
 
                 Text(
                   'Email',
@@ -117,9 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Enter your email',
-                    prefixIcon: const Icon(
-                      Icons.email_outlined,
-                    ),
+                    prefixIcon: const Icon(Icons.email_outlined),
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -142,9 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.025,
-                ),
+                SizedBox(height: size.height * 0.025),
 
                 Text(
                   'Password',
@@ -161,14 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: !isPasswordVisible,
                   decoration: InputDecoration(
                     hintText: 'Enter your password',
-                    prefixIcon: const Icon(
-                      Icons.lock_outline,
-                    ),
+                    prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
-                          isPasswordVisible =
-                              !isPasswordVisible;
+                          isPasswordVisible = !isPasswordVisible;
                         });
                       },
                       icon: Icon(
@@ -199,9 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.04,
-                ),
+                SizedBox(height: size.height * 0.04),
 
                 SizedBox(
                   width: double.infinity,
@@ -209,13 +212,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: login,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color(0xFF6C63FF),
+                      backgroundColor: const Color(0xFF6C63FF),
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     child: Text(
@@ -228,14 +229,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  height: size.height * 0.025,
-                ),
+                SizedBox(height: size.height * 0.025),
 
                 Center(
                   child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Don't have an account? ",
@@ -251,8 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(
                             fontSize: size.width * 0.035,
                             fontWeight: FontWeight.bold,
-                            color:
-                                const Color(0xFF6C63FF),
+                            color: const Color(0xFF6C63FF),
                           ),
                         ),
                       ),

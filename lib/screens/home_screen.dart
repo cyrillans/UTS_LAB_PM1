@@ -1,81 +1,52 @@
-import 'package:flutter/material.dart';
 
-import '../routes/routes_app.dart';
-import '../widgets/bottom_nav.dart';
-import '../widgets/primary_button.dart';
-import '../providers/quiz_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+import '../providers/quiz_provider.dart';
+import '../providers/user_session.dart';
+import '../routes/routes_app.dart';
+import '../widgets/bottom_nav.dart';
+
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  static const Color purple = Color(0xFF6C63FF);
+  static const Color darkPurple = Color(0xFF27234A);
+  static const Color background = Color(0xFFF7F7FC);
 
-class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 0;
-
-  void changePage(int index) {
-    setState(() {
-      currentIndex = index;
-    });
-
-    if (index == 1) {
-      Navigator.pushNamed(
-        context,
-        AppRoutes.leaderboard,
-      );
-    }
-
-    if (index == 2) {
-      Navigator.pushNamed(
-        context,
-        AppRoutes.profile,
-      );
-    }
+  void startQuiz(BuildContext context) {
+    context.read<QuizProvider>().resetQuiz();
+    Navigator.pushNamed(context, AppRoutes.quiz);
   }
-
- void startQuiz() {
-  context.read<QuizProvider>().resetQuiz();
-
-  Navigator.pushNamed(
-    context,
-    AppRoutes.quiz,
-  );
-}
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    // Mengambil nama terbaru dari UserSession.
+    final userName = context.watch<UserSession>().userName;
 
     return Scaffold(
+      backgroundColor: background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.06,
-            vertical: size.height * 0.025,
-          ),
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // =========================
               // HEADER
-              // =========================
               Row(
                 children: [
                   Container(
-                    width: size.width * 0.12,
-                    height: size.width * 0.12,
-                    padding: const EdgeInsets.all(8),
+                    width: 48,
+                    height: 48,
+                    padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.06),
+                          color: Colors.black.withOpacity(0.04),
                           blurRadius: 12,
-                          offset: const Offset(0, 5),
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
@@ -84,336 +55,396 @@ class _HomeScreenState extends State<HomeScreen> {
                       fit: BoxFit.contain,
                     ),
                   ),
-
-                  SizedBox(
-                    width: size.width * 0.035,
-                  ),
-
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Good Morning! 👋',
+                        const Text(
+                          'Selamat datang 👋',
                           style: TextStyle(
-                            fontSize: size.width * 0.033,
-                            color: Colors.grey.shade600,
+                            fontSize: 12,
+                            color: Colors.grey,
                           ),
                         ),
-
                         const SizedBox(height: 3),
-
                         Text(
-                          'Quizzer',
-                          style: TextStyle(
-                            fontSize: size.width * 0.05,
-                            fontWeight: FontWeight.bold,
+                          '$userName!',
+                          style: const TextStyle(
+                            fontSize: 21,
+                            color: darkPurple,
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
                       ],
                     ),
                   ),
-
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Belum ada notifikasi baru.'),
+                          ),
+                        );
+                      },
                       icon: const Icon(
                         Icons.notifications_none_rounded,
+                        color: darkPurple,
                       ),
                     ),
                   ),
                 ],
               ),
 
-              SizedBox(
-                height: size.height * 0.03,
-              ),
+              const SizedBox(height: 28),
 
-              // =========================
-              // WELCOME CARD
-              // =========================
+              // HERO CARD
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(
-                  size.width * 0.055,
-                ),
+                padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [
-                      Color(0xFF6C63FF),
-                      Color(0xFF8A7FFF),
+                      Color(0xFF8378FF),
+                      Color(0xFF6255E8),
+                      Color(0xFF4536B5),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(28),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF6C63FF)
-                          .withValues(alpha: 0.25),
-                      blurRadius: 20,
+                      color: purple.withOpacity(0.22),
+                      blurRadius: 22,
                       offset: const Offset(0, 10),
                     ),
                   ],
                 ),
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                child: Stack(
                   children: [
-                    Text(
-                      'Ready to challenge yourself?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: size.width * 0.055,
-                        fontWeight: FontWeight.bold,
-                        height: 1.25,
+                    Positioned(
+                      right: -8,
+                      top: 4,
+                      child: Icon(
+                        Icons.auto_awesome_rounded,
+                        size: 88,
+                        color: Colors.white.withOpacity(0.12),
                       ),
                     ),
-
-                    const SizedBox(height: 10),
-
-                    Text(
-                      'Test your knowledge and get the highest score!',
-                      style: TextStyle(
-                        color: Colors.white.withValues(
-                          alpha: 0.85,
-                        ),
-                        fontSize: size.width * 0.035,
-                        height: 1.4,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    SizedBox(
-                      width: size.width * 0.38,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: startQuiz,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor:
-                              const Color(0xFF6C63FF),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 11,
+                            vertical: 7,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.18),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.bolt_rounded,
+                                color: Color(0xFFFFD76A),
+                                size: 16,
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'CHALLENGE YOURSELF',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        child: const Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Start Quiz',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(width: 6),
-                            Icon(
-                              Icons.arrow_forward_rounded,
-                              size: 18,
-                            ),
-                          ],
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Asah Otakmu,\nRaih Skor Terbaik!',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 27,
+                            height: 1.2,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Uji pengetahuanmu dan jadilah juara di Quizzy.',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.85),
+                            fontSize: 12,
+                            height: 1.6,
+                          ),
+                        ),
+                        const SizedBox(height: 22),
+                        ElevatedButton(
+                          onPressed: () => startQuiz(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFFD76A),
+                            foregroundColor: darkPurple,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 19,
+                              vertical: 14,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Mulai Sekarang',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.arrow_forward_rounded,
+                                size: 18,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
 
-              SizedBox(
-                height: size.height * 0.03,
+              const SizedBox(height: 28),
+
+              // STATISTIK
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Ringkasan Kamu',
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w900,
+                      color: darkPurple,
+                    ),
+                  ),
+                  Icon(
+                    Icons.insights_rounded,
+                    color: purple,
+                    size: 23,
+                  ),
+                ],
               ),
 
-              // =========================
-              // STATISTICS
-              // =========================
-              Text(
-                'Your Statistics',
+              const SizedBox(height: 15),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _StatCard(
+                      icon: Icons.quiz_rounded,
+                      title: 'Total Soal',
+                      value: '10',
+                      color: purple,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _StatCard(
+                      icon: Icons.emoji_events_rounded,
+                      title: 'Skor Maks.',
+                      value: '100',
+                      color: const Color(0xFFFFA94D),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _StatCard(
+                      icon: Icons.local_fire_department_rounded,
+                      title: 'Semangat',
+                      value: 'Go!',
+                      color: const Color(0xFF18B89A),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 29),
+
+              // AKTIVITAS
+              const Text(
+                'Pilih Aktivitas',
                 style: TextStyle(
-                  fontSize: size.width * 0.045,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w900,
+                  color: darkPurple,
                 ),
               ),
 
-              const SizedBox(height: 14),
+              const SizedBox(height: 6),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: _StatCard(
-                      icon: Icons.quiz_outlined,
-                      value: '0',
-                      label: 'Quiz Taken',
-                    ),
-                  ),
-
-                  const SizedBox(width: 12),
-
-                  Expanded(
-                    child: _StatCard(
-                      icon: Icons.star_outline_rounded,
-                      value: '0',
-                      label: 'Best Score',
-                    ),
-                  ),
-
-                  const SizedBox(width: 12),
-
-                  Expanded(
-                    child: _StatCard(
-                      icon: Icons
-                          .local_fire_department_outlined,
-                      value: '0',
-                      label: 'Streak',
-                    ),
-                  ),
-                ],
+              Text(
+                'Mulai tantanganmu hari ini',
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 12,
+                ),
               ),
 
-              SizedBox(
-                height: size.height * 0.03,
+              const SizedBox(height: 15),
+
+              // MULAI KUIS
+              _ActivityCard(
+                icon: Icons.psychology_rounded,
+                title: 'Mulai Kuis',
+                subtitle: 'Uji pengetahuanmu dan kumpulkan poin',
+                color: purple,
+                onTap: () => startQuiz(context),
               ),
 
-              // =========================
-              // TOP RANKING HEADER
-              // =========================
-              Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Top Ranking',
-                    style: TextStyle(
-                      fontSize: size.width * 0.045,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              const SizedBox(height: 12),
 
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.leaderboard,
-                      );
-                    },
-                    child: const Text(
-                      'See All',
-                      style: TextStyle(
-                        color: Color(0xFF6C63FF),
-                        fontWeight: FontWeight.bold,
+              // PAPAN PERINGKAT
+              _ActivityCard(
+                icon: Icons.emoji_events_rounded,
+                title: 'Papan Peringkat',
+                subtitle: 'Lihat posisi pemain teratas',
+                color: const Color(0xFFFFA94D),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.leaderboard,
+                  );
+                },
+              ),
+
+              const SizedBox(height: 24),
+
+              // MOTIVASI
+              Container(
+                padding: const EdgeInsets.all(17),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEDEBFF),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.lightbulb_rounded,
+                      color: purple,
+                      size: 29,
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tahukah Kamu?',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w900,
+                              color: darkPurple,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            'Konsistensi berlatih adalah kunci untuk mendapatkan hasil yang lebih baik.',
+                            style: TextStyle(
+                              fontSize: 11,
+                              height: 1.5,
+                              color: Color(0xFF625B86),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-
-              // =========================
-              // RANKING LIST
-              // =========================
-              const _RankingItem(
-                rank: 1,
-                name: 'Alya Putri',
-                score: 98,
-                isFirst: true,
-              ),
-
-              const _RankingItem(
-                rank: 2,
-                name: 'Rizky Pratama',
-                score: 95,
-              ),
-
-              const _RankingItem(
-                rank: 3,
-                name: 'Nadia Salsabila',
-                score: 92,
-              ),
-
-              SizedBox(
-                height: size.height * 0.02,
+                  ],
+                ),
               ),
             ],
           ),
         ),
       ),
 
-      // =========================
       // BOTTOM NAVIGATION
-      // =========================
-      bottomNavigationBar: BottomNav(
-        currentIndex: currentIndex,
-        onTap: changePage,
-      ),
+      bottomNavigationBar: const BottomNav(currentIndex: 0),
     );
   }
 }
 
-// =====================================================
-// STAT CARD
-// =====================================================
-
+// STATISTIC CARD
 class _StatCard extends StatelessWidget {
   final IconData icon;
+  final String title;
   final String value;
-  final String label;
+  final Color color;
 
   const _StatCard({
     required this.icon,
+    required this.title,
     required this.value,
-    required this.label,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: size.height * 0.018,
-        horizontal: size.width * 0.025,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
+        vertical: 15,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(19),
         border: Border.all(
-          color: Colors.grey.shade200,
+          color: Colors.grey.shade100,
         ),
       ),
       child: Column(
         children: [
-          Icon(
-            icon,
-            color: const Color(0xFF6C63FF),
-            size: size.width * 0.07,
-          ),
-
-          const SizedBox(height: 8),
-
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: size.width * 0.045,
-              fontWeight: FontWeight.bold,
+          Container(
+            width: 39,
+            height: 39,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 22,
             ),
           ),
-
-          const SizedBox(height: 3),
-
+          const SizedBox(height: 12),
           Text(
-            label,
+            value,
+            style: const TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.w900,
+              color: HomeScreen.darkPurple,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: size.width * 0.027,
+              fontSize: 10,
               color: Colors.grey.shade600,
             ),
           ),
@@ -423,90 +454,87 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-// =====================================================
-// RANKING ITEM
-// =====================================================
+// ACTIVITY CARD
+class _ActivityCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final VoidCallback onTap;
 
-class _RankingItem extends StatelessWidget {
-  final int rank;
-  final String name;
-  final int score;
-  final bool isFirst;
-
-  const _RankingItem({
-    required this.rank,
-    required this.name,
-    required this.score,
-    this.isFirst = false,
+  const _ActivityCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isFirst
-              ? const Color(0xFFFFD66B)
-              : Colors.grey.shade200,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isFirst
-                  ? const Color(0xFFFFF1C7)
-                  : const Color(0xFFF1F0FF),
-              shape: BoxShape.circle,
-            ),
-            child: Text(
-              '$rank',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isFirst
-                    ? const Color(0xFFD99A00)
-                    : const Color(0xFF6C63FF),
-              ),
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Colors.grey.shade100,
             ),
           ),
-
-          const SizedBox(width: 12),
-
-          Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-
-          Row(
+          child: Row(
             children: [
-              const Icon(
-                Icons.star_rounded,
-                color: Color(0xFFFFC107),
-                size: 20,
-              ),
-
-              const SizedBox(width: 4),
-
-              Text(
-                '$score',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+              Container(
+                width: 49,
+                height: 49,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(15),
                 ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 26,
+                ),
+              ),
+              const SizedBox(width: 13),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        color: HomeScreen.darkPurple,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 11,
+                        height: 1.4,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 6),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: Colors.grey.shade400,
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
